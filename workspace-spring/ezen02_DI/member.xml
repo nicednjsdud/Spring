@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN"
+        "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+<!-- MemberSeriviceImpl 클래스 이용해 id가 memberSerice인 빈을 만듦.
+	빈을 만들면서 setter 주입방식으로 id가 memberDAO인 빈을 자신의 속성에 주입함 -->
+	<bean id="memberService" class="kr.co.ezenac.di03.MemberServiceImpl">
+	<!-- 주입되는 데이터가 기본형이 아닌 참조형인 경우 ref속성으로 설정함 -->
+		<property name="memberDAO" ref="memberDAO" />
+	</bean>
+	<!-- id가 memberDAO인 빈을 MemeberDAOImpl 이용해 만듦 -->
+	<bean id="memberDAO" class="kr.co.ezenac.di03.MemberDAOImpl"/>
+
+</beans>
