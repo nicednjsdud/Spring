@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<!--  id가 simpleUrlController인 빈을 생성함 -->
+	<bean id="simpleUrlController" class="kr.co.ezenac.simpleurl.SimepleUrlController" />
+	
+	<!-- SimpleUrlHandlerMapping 클래스를 이용해 /url/index.do로 요청시 simpleUrlController를 호출하도록 매핑함 -->
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/url/index.do">simpleUrlController</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
