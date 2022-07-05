@@ -14,9 +14,9 @@
 			<transactionManager type="JDBC" />		<!-- Mybatis 자체에서 트랜잭션 관리 -->
 			<dataSource type="POOLED">				<!-- Mybatis 자체 DB 커넥션풀을 사용 -->
 				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
-				<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
-				<property name="username" value="ezen"/>
-				<property name="password" value="0824"/>
+				<property name="url" value="jdbc:oracle:thin:@BOBWORLD_medium?TNS_ADMIN=/Users/jeong-won-yeong/Wallet/Wallet_BOBWORLD"/>
+				<property name="username" value="ADMIN"/>
+				<property name="password" value="Dnjsdud123!@#"/>
 			</dataSource>
 		</environment>
 	</environments>

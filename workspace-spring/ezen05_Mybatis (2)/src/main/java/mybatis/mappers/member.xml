@@ -50,6 +50,44 @@
 		]]>	
 	</select>	
 	
+<!-- 	<select id = "searchMember" parameterType="memberDTO" resultMap="memResult">
+		공통 SQL문 
+		<![CDATA[
+			SELECT * from T_MEMBER
+		]]>
+		<where>
+			<if test="name !='' and name !=null">
+				name = #{name}
+			</if>
+			<if test="email !='' and email !=null">
+				and email = #{email}
+			</if>
+		</where>
+			order by joinDate desc
+		
+	</select> -->
+		<select id = "searchMember2" parameterType="memberDTO" resultMap="memResult">
+		<!-- 공통 SQL문  -->
+		<![CDATA[
+			SELECT * from T_MEMBER
+		]]>
+		<where>	<!-- where 태그 이용해 sql문 where절 구성함 -->
+			<choose>
+			<!-- name과 email 속성 값이 모두 있는 경우 name 속성 값	and email 속성 값이 있는 조건식을 where절에 추 -->
+				<when test=" name !='' and name !=null and email !='' and email !=null">
+					name = #{name} and email = #{email}
+				</when>
+				<when test=" name !='' and name !=null">
+					name = #{name} 
+				</when>
+				<when test=" email !='' and email !=null">
+					email = #{email} 
+				</when>
+			</choose>
+		</where>
+			order by joinDate desc
+		
+	</select>
 	
 	<!-- insert -->
 	<!-- parameterType: MemberDAO에서 회원 정보를  memberDTO의 속성에 저장해서 넘김-->

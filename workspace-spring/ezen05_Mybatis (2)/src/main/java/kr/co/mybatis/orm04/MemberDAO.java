@@ -106,30 +106,24 @@ public class MemberDAO {
 		session.commit();
 		return result;
 	}
-	
+
 	// delete
 	public int deleteMember(String id) {
 		sqlMapper = getInstance();
 		SqlSession session = sqlMapper.openSession();
-		
-		int result = session.delete("mapper.member.deleteMember",id);
+
+		int result = session.delete("mapper.member.deleteMember", id);
 		session.commit();
 		return result;
 	}
+
+	// select
+	public List<MemberDTO> searchMember(MemberDTO memberDTO) {
+		sqlMapper = getInstance();
+		SqlSession session = sqlMapper.openSession();
+		List<MemberDTO> membersList = session.selectList("mapper.member.searchMember", memberDTO);
+
+		return membersList;
+
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

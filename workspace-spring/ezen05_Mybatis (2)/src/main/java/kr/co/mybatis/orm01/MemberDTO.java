@@ -9,7 +9,7 @@ public class MemberDTO {
 	private String name;
 	private String email;
 	private Date joinDate;
-	
+
 	public MemberDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -61,8 +61,8 @@ public class MemberDTO {
 	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
 	}
-	
-	
+
+
 }
 
 

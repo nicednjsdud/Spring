@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView">
+		</property>
+		<property name="perfix" value="/WeB-INF/views/member" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<bean id="memberController"
+		class="kr.co.springmybatis.controller.MemberControllerImpl">
+		<property name="methodNameResolver">
+			<ref bean="memberMethodResolver"/>
+		</property>
+		<property name="memberService" ref="memberService" />
+		
+	</bean>
+
+	<bean id="memberMethodResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+				<prop key="/member/listMembers.do">listMembers</prop>
+				<prop key="/member/addMember.do">listMembers</prop>
+				<prop key="/member/removeMember.do">listMembers</prop>
+				<prop key="/member/memberForm.do">listMembers</prop>
+			</props>		
+		</property>
+	</bean>
+
+	<bean id="memberUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="/member/*.do">memberController</prop>
+			</props>
+		</property>
+	</bean>
+</beans>

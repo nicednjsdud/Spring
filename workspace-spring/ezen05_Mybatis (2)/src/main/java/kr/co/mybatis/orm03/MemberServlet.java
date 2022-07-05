@@ -1,7 +1,6 @@
 package kr.co.mybatis.orm03;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -19,13 +18,13 @@ public class MemberServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=utf-8");
-		
+
 		MemberDAO dao = new MemberDAO();
 		MemberDTO memberDTO = new MemberDTO();
-		
+
 		String action = request.getParameter("action");
 		String forwardPage = "";
-		
+
 		if (action == null || action.equals("listmembers")) {
 			List<MemberDTO> membersList = dao.selectAllMemberList();
 			request.setAttribute("membersList", membersList);
@@ -43,9 +42,9 @@ public class MemberServlet extends HttpServlet {
 			 request.setAttribute("membersList", membersList);
 			 forwardPage = "orm02/listMembers.jsp";
 		}
-		
+
 		request.getRequestDispatcher(forwardPage).forward(request, response);
-		
+
 	}
 }
 

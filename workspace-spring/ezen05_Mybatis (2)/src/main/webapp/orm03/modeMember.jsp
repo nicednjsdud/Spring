@@ -46,7 +46,6 @@
 					type="reset" value="다시입력" /></td>
 			</tr>
 		</table>
-
 	</form>
 	
 </body>

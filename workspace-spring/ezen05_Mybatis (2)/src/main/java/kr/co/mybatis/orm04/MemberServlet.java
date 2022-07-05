@@ -101,6 +101,19 @@ public class MemberServlet extends HttpServlet {
 			dao.deleteMember(id);
 			forwardPage = "mem4.do?action=listmembers";
 		}
+		// select
+		else if (action.equals("searchMember")) {
+			// 검색창에 입력한 검색 조건을 가져
+			String name = request.getParameter("name");
+			String email = request.getParameter("email");
+			memberDTO.setName(name);
+			memberDTO.setEmail(email);
+			List<MemberDTO> membersList = dao.searchMember(memberDTO);
+			request.setAttribute("membersList", membersList);
+			forwardPage = "orm03/listMembers.jsp";
+
+		}
+
 		request.getRequestDispatcher(forwardPage).forward(request, response);
 
 	}
