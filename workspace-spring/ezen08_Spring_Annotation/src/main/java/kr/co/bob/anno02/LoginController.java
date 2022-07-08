@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,4 +84,37 @@ public class LoginController {
 		return mav;
 	}
 	
+	/*
+	 *  @ModelAttribute를 이용해 전달되는 매개변수 값을 LoginDTO 클래스와 이름이 같은 속성에 자동으로 설정함
+	 *  addObject() 이용할 필요없이 info를 이용해 바로 JSP에서 LoginDTO 속성에 접근할 수 있음.
+	 *  
+	 */
+	@RequestMapping(value="/anno/login4.do",method= {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView login4(@ModelAttribute("info1") LoginDTO loginDTO,
+				HttpServletRequest request,HttpServletResponse response) throws IOException{
+		request.setCharacterEncoding("UTF-8");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("result");
+		return mav;
+		
+	}
+	
+	// 메서드 호출 시 Model 클래스 객체를 생성 
+	@RequestMapping(value ="/anno/login5.do",method = {RequestMethod.GET,RequestMethod.POST})
+	public String login5(Model model ,HttpServletRequest request,HttpServletResponse response) throws IOException{
+		request.setCharacterEncoding("UTF-8");
+		model.addAttribute("userId","BOB");			// JSP에 전달할 데이터를 model에 바인딩
+		model.addAttribute("userName","정원영");
+		
+		return "result";
+	}
 }
+
+
+
+
+
+
+
+
+

@@ -10,7 +10,7 @@
 <title>로그인 폼</title>
 </head>
 <body>
-	<form name="frmLogin" method="post" action="${contextPath }/anno/login3.do">
+	<form name="frmLogin" method="post" action="${contextPath }/anno/login5.do">
 		<input type="hidden" name="email" value="" />
 		<table border="1" width="80%" align="center">
 			<tr align="center">

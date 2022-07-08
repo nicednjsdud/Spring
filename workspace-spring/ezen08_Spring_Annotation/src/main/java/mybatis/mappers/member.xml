@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mapper.member">						<!-- member.xml의 네임스페이스 지정 -->
+
+	<resultMap type="memberDTO" id="memResult">	<!-- SQL문 실행한 후 반환되는 레코드들을 typeAlias에서 지정한 memberDTO 빈에 저장 -->
+		<result property="id" column="id" />	<!-- 레코드의 컬럼 이름에 대해 memberDTO의 같은 속성에 값을 설정 -->
+		<result property="pwd" column="pwd" />
+		<result property="name" column="name" />
+		<result property="email" column="email" />
+		<result property="joinDate" column="joinDate" />
+	</resultMap>
+	
+	<!--select-->											<!-- resultMap: 반환되는 레코드를 memResult에 저장함 -->	
+	<select id="selectAllMemberList" resultMap="memResult"> <!-- id: dao에서 id를 이용해 해당 SQL 호출 -->
+		<![CDATA[ 		
+			SELECT * FROM T_MEMBER ORDER BY JOINDATE DESC
+		 ]]>
+	</select>
+	
+	<!-- id : MemberDAO에서 접근시 사용할 id -->
+	<!-- resultType : sql문 조회 결과 이름을 호출한 메서드로 반환함 -->
+	<select id="selectName" resultType="String" >
+		<![CDATA[
+			SELECT NAME FROM T_MEMBER WHERE ID = 'lee'
+		]]>
+	</select>
+	
+	<select id="selectPwd" resultType="String" >
+		<![CDATA[
+			SELECT PWD FROM T_MEMBER WHERE ID = 'lee'
+		]]>
+	</select>	
+	
+	<!-- id: MemberDAO에서 호출하는 id를 지정함 -->
+	<!-- resultType : 조회되는 한개의 레코드를 memberDTO에 저장함 -->
+	<!-- parameterType : MemberDAO에서 SQL문 호출 시 전달되는 매개변수의 데이터 타입 지정-->
+	<!-- #{id} : MemberDAO에서 메서드 호출하면서 parameterType으로 전달된 매개변수 이름을 select문의 id의 조건값으로 사용함 -->
+	<select id="selectMemberById" resultType="memberDTO" parameterType="String">
+		<![CDATA[
+			SELECT * FROM T_MEMBER WHERE ID = #{id}
+		]]>	
+	</select>
+	
+	<select id="selectMemberByPwd" resultMap="memResult" parameterType="int">
+		<![CDATA[
+			SELECT * FROM T_MEMBER WHERE pwd = #{pwd}
+		]]>	
+	</select>	
+	
+<!-- 	<select id = "searchMember" parameterType="memberDTO" resultMap="memResult">
+		공통 SQL문 
+		<![CDATA[
+			SELECT * from T_MEMBER
+		]]>
+		<where>
+			<if test="name !='' and name !=null">
+				name = #{name}
+			</if>
+			<if test="email !='' and email !=null">
+				and email = #{email}
+			</if>
+		</where>
+			order by joinDate desc
+		
+	</select> -->
+		<select id = "searchMember2" parameterType="memberDTO" resultMap="memResult">
+		<!-- 공통 SQL문  -->
+		<![CDATA[
+			SELECT * from T_MEMBER
+		]]>
+		<where>	<!-- where 태그 이용해 sql문 where절 구성함 -->
+			<choose>
+			<!-- name과 email 속성 값이 모두 있는 경우 name 속성 값	and email 속성 값이 있는 조건식을 where절에 추 -->
+				<when test=" name !='' and name !=null and email !='' and email !=null">
+					name = #{name} and email = #{email}
+				</when>
+				<when test=" name !='' and name !=null">
+					name = #{name} 
+				</when>
+				<when test=" email !='' and email !=null">
+					email = #{email} 
+				</when>
+			</choose>
+		</where>
+			order by joinDate desc
+		
+	</select>
+	
+	<!-- insert -->
+	<!-- parameterType: MemberDAO에서 회원 정보를  memberDTO의 속성에 저장해서 넘김-->
+	<insert id="insertMember" parameterType="memberDTO">
+		<![CDATA[
+			INSERT INTO T_MEMBER (id, PWD, NAME, EMAIL) 
+			VALUES (#{id}, #{pwd}, #{name}, #{email} )		
+		]]>
+	</insert>
+	
+	<!-- parameterType : MemberDAO에서 회원정보를 HashMap에 담아서 전달함 -->
+	<insert id="insertMember2"  parameterType="java.util.HashMap">
+		<![CDATA[
+			INSERT INTO T_MEMBER (id, PWD, NAME, EMAIL) 
+			VALUES (#{id}, #{pwd}, #{name}, #{email} )		
+		]]>
+	</insert>
+	
+	<!-- Update -->
+	<!-- parameterType :SQL문에 사용될 데이터를 memberDTO에 담아서 전달함 -->
+	<update id="updateMember" parameterType="memberDTO">
+		<![CDATA[
+			UPDATE T_MEMBER SET PWD = #{pwd}, NAME= #{name}, EMAIL = #{email} WHERE ID = #{id}
+		]]>
+	</update>
+	
+	<!-- Delete -->
+	<delete id="deleteMember" parameterType="memberDTO">
+		<![CDATA[
+			DELETE t_member WHERE id = #{id}
+		]]>
+	</delete>
+</mapper>  

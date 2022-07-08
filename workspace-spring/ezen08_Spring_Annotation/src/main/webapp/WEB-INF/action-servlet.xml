@@ -12,9 +12,11 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/views/anno/" />		<!-- jsp 파일 위치 지정 -->
+		<!-- <property name="prefix" value="/WEB-INF/views/anno/" /> -->	<!--	jsp 파일 위치 지정 -->
+		<property name="prefix" value="/WEB-INF/views/member/" />			<!-- jsp 경로 변경 -->
 		<property name="suffix" value=".jsp" />
 	</bean>
+	
 	<!-- 클래스 레벨에 @RequestMapping을 처리함 -->
 	<bean
 		class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />

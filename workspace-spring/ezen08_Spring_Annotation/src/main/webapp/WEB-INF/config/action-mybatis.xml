@@ -23,14 +23,21 @@
 		<property name="password" value="${jdbc.password}"/>
 	</bean>
 	
-	
-	<!-- DataSourceTransactionManager클래스를 이용해 dataSource 빈에 트랜잭션을 적용함 -->
-	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<!-- SqlSessionFactoryBean 클래스 이용해  dataSource 속성에 dataSource 빈을 설정-->
+	<!-- configLocation 속성에 modelConfig.xml을 설정 -->
+	<!-- mapperLocations 속성에 mybatis/mappers 패키지의 모든 매퍼 파일들을 읽어 들여와 설정 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis/model/modelConfig.xml" />
+		<property name="mapperLocations" value="classpath:mybatis/mappers/*.xml" />
 	</bean>
 	
-	<!-- 애너테이션을 사용하여 트랜잭션을 적용하기 위해 txManager 빈을 설정함 -->
-	<tx:annotation-driven transaction-manager="txManager" />
+	<!-- SqlSessionTemplate 클래스를 이용해 sqlSession 빈을 생성  -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
+	</bean>
+	
+	
 </beans>
 
 
