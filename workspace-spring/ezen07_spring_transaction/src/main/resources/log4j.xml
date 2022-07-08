@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="kr.co.ezenac">
+	<logger name="kr.co.transaction">
 		<level value="info" />
 	</logger>
 	

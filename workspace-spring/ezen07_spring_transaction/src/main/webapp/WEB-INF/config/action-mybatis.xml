@@ -4,7 +4,8 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 
 	<!-- PropertyPlaceholderConfigurer 클래스 이용해 db 설정 관련 정보를 jdbc.properties 파일에서 읽어 들임 -->
 	<bean id="propertyPlaceholderConfigurer" 
@@ -40,11 +41,13 @@
 		<property name="sqlSession" ref="sqlSession" ></property>
 	</bean>
 	
+	<!-- DataSourceTransactionManager클래스를 이용해 dataSource 빈에 트랜잭션을 적용함 -->
 	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="datasource" ref="dataSource">
-		
-		</property>
+		<property name="dataSource" ref="dataSource" />
 	</bean>
+	
+	<!-- 애너테이션을 사용하여 트랜잭션을 적용하기 위해 txManager 빈을 설정함 -->
+	<tx:annotation-driven transaction-manager="txManager" />
 </beans>
 
 

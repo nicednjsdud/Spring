@@ -10,18 +10,18 @@
 
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
-		<property name="prefix" value="/WEB-INF/account/" />		<!-- jsp 파일 위치 지정 -->
+		<property name="prefix" value="/WEB-INF/views/account/" />		<!-- jsp 파일 위치 지정 -->
 		<property name="suffix" value=".jsp" />
 	</bean>
 	
-	<bean id="memberController" class="kr.co.transaction.account.AccountController">
+	<bean id="accController" class="kr.co.transaction.account.AccountController">
 		<property name="methodNameResolver">
-			<ref bean="MethodResolver"/>
+			<ref local="methodResolver"/>
 		</property>
-		<property name="AccountService" ref="AccountService" />
+		<property name="accService" ref="accService" />
 	</bean>
 	
-	<bean id="memberMethodResolver" 
+	<bean id="methodResolver" 
 			class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
 		<property name="mappings">
 			<props>
@@ -30,10 +30,10 @@
 		</property>
 	</bean>
 	
-	<bean id="memberUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+	<bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<props>
-				<prop key="/account/*.do">AccountController</prop>
+				<prop key="/account/*.do">accController</prop>
 			</props>
 		</property>
 	</bean>
