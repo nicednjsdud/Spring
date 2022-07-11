@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,10 @@ import kr.co.tiles.member.service.MemberService;
  *  @Controller를 이용해 MemberControllerImpl 클래스에 대해 id가 memberController인 빈을 자동 생성
  */
 @Controller("memberController")
+@EnableAspectJAutoProxy		// aop 기능 활성화 
 public class MemberControllerImpl extends MultiActionController implements MemberController {
 	
-	private static final Logger logger = LoggerFactory.getLogger("MemberControllerImpl.class");
+//	private static final Logger logger = LoggerFactory.getLogger("MemberControllerImpl.class");
 	
 	// @Autowired를 이용해 id가 memberService인 빈을 자동 주입함
 	@Autowired
@@ -41,7 +43,7 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		/* 브라우저에서의 요청명에서 확장명.do를 제외한 뷰이름을 가져옴 */
 		String viewName=getViewName(request);
-		logger.debug("debug 레벨 : viewName = " + viewName);
+//		logger.debug("debug 레벨 : viewName = " + viewName);
 		List<MemberDTO> membersList = memberService.listMembers();
 		ModelAndView mav = new ModelAndView(viewName);
 
@@ -55,9 +57,9 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 	@Override
 	@RequestMapping(value = "/member/*Form.do", method = RequestMethod.GET)
 	public ModelAndView form(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("/member/memberFoem.do");
-
+		String viewName=getViewName(request);
+		ModelAndView mav = new ModelAndView(viewName);
+		
 		return mav;
 	}
 
