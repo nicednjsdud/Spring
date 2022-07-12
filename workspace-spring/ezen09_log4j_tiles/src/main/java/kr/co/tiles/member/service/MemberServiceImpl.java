@@ -31,8 +31,11 @@ public class MemberServiceImpl implements MemberService {
 	}
 	@Override
 	public int removeMember(String id) throws DataAccessException {
-		// TODO Auto-generated method stub
 		return memberDAO.removeMember(id);
+	}
+	@Override
+	public MemberDTO login(MemberDTO memberDTO) throws DataAccessException {
+		return memberDAO.loginById(memberDTO);
 	}
 	
 }

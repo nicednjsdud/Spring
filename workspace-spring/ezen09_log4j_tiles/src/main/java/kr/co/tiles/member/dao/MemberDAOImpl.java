@@ -39,4 +39,11 @@ public class MemberDAOImpl implements MemberDAO {
 
 		return result;
 	}
+
+	@Override
+	public MemberDTO loginById(MemberDTO memberDTO) throws DataAccessException {
+		//전달된 memberDTO 계속 전달해 ID와PWD에 대한 회원정보를 MemberDTO 객체로 반환함
+		MemberDTO dto =  sqlSession.selectOne("mapper.member.loginById",memberDTO);
+		return dto;
+	}
 }
