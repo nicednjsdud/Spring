@@ -3,6 +3,7 @@
 	xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" 
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
@@ -42,5 +43,13 @@
 		<!-- 전달되는 매개변수의 인코딩 -->
 		<beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
+	
+	<!-- 인터셉터 기능 사용  -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/inter/*.do"/> <!-- 특정 요청, 즉/inter/*.do에 대해서만 인터셉터 빈을 수행함 -->
+			<beans:bean class="kr.co.fileinter.inter.LocaleInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 </beans:beans>

@@ -3,6 +3,7 @@
 	xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
@@ -32,7 +33,7 @@
 	</beans:bean>
 
 	<!--tiles 관련 빈 설정 - TilesConfigurer 클래스를 이용해 빈 생성 -->
-	<beans:bean id="TilesConfigurer"
+	<beans:bean id="tilesConfigurer"
 		class="org.springframework.web.servlet.view.tiles2.TilesConfigurer">
 		<beans:property name="definitions">
 			<beans:list>
@@ -40,12 +41,17 @@
 				<beans:value>classpath:tiles/*.xml</beans:value>
 			</beans:list>
 		</beans:property>
-		<beans:property name="PreparerFactoryClass"
+		<beans:property name="preparerFactoryClass"
 			value="org.springframework.web.servlet.view.tiles2.SpringBeanPreparerFactory" />
 	</beans:bean>
 	<context:component-scan
 		base-package="kr.co.tiles" />
-
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*/*.do"/> <!-- 모든 요청에 대해 인터셉터를 수행함 -->
+			<beans:bean class="kr.co.tiles.member.interceptor.ViewNameInterceptor"></beans:bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
 
 
 </beans:beans>

@@ -21,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class FileUploadController {
 
 	//파일 저장 위치 지정
-	private static final String CURR_IMAGE_PEPO_PATH = "/Users/jeong-won-yeong/Documents/Spring/workspace-spring/imageRepo";
+	private static final String CURR_IMAGE_PEPO_PATH = "/Users/jeong-won-yeong/Documents/Spring/workspace-spring/imageRepo/";
 	
 	@RequestMapping(value = "/form")
 	public String form() {
@@ -71,7 +71,7 @@ public class FileUploadController {
 			
 			fileList.add(originalFilename);									//파일 이름을 하나씩 fileList에 저장
 			
-			File file = new File(CURR_IMAGE_PEPO_PATH +"\\"+ fileName);
+			File file = new File(CURR_IMAGE_PEPO_PATH +"/"+ fileName);
 			if(mFile.getSize() != 0) {										//첨부된 파일이 있는지 체크
 				if(!file.exists()) {										//경로에 파일이 없으면 그 경로에 해당하는 
 					if(file.getParentFile().mkdirs()) {						//디렉토리를 만든 후 파일을 생성함					
@@ -79,7 +79,7 @@ public class FileUploadController {
 					}
 				}
 				//임시로 저장된 MultipartFile을  실제 파일로 전송
-				mFile.transferTo(new File(CURR_IMAGE_PEPO_PATH +"\\"+ originalFilename));
+				mFile.transferTo(new File(CURR_IMAGE_PEPO_PATH +"/"+ originalFilename));
 			}		
 		}		
 		return fileList;			//첨부한 파일 이름이 저장된 fileList 반환함 	
