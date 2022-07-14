@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+	
+
+	<!-- 컨트롤러에서 반환되는 뷰이름 지정 --> <!-- 기본 레이아웃을 상속받음 -->
+	<definition name="board/listArticles" extends="baseLayout">
+		<put-attribute name="title" value="글목록" />
+		<put-attribute name="body"
+			value="/WEB-INF/views/board/listArticles.jsp" />
+			<!-- 레이아웃 페이지의 본문에 표시할 JSP지정 -->
+	</definition>
+</tiles-definitions>       

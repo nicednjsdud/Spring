@@ -25,7 +25,7 @@
 		<beans:property name="prefix" value="/WEB-INF/views/" /> <beans:property 
 		name="suffix" value=".jsp" /> </beans:bean> -->
 
-	<!-- tiles viewResolver를 사용해 화면 표 -->
+	<!-- tiles viewResolver를 사용해 화면 표시 -->
 	<beans:bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
 		<beans:property name="viewClass"
