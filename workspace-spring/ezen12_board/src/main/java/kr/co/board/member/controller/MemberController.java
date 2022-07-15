@@ -15,7 +15,6 @@ import kr.co.board.member.dto.MemberDTO;
 public interface MemberController {
 
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception;
-	public ModelAndView form(@RequestParam(value="result",required=false)String result,HttpServletRequest request,HttpServletResponse response) throws Exception;
 	public ModelAndView addMember(@ModelAttribute("member") MemberDTO memberDTO,HttpServletRequest request,HttpServletResponse response) throws Exception;
 	public ModelAndView removeMember(@RequestParam String id,HttpServletRequest request,HttpServletResponse response) throws Exception;
 	public ModelAndView login(@ModelAttribute("member")MemberDTO memberDTO,RedirectAttributes rAttributes,HttpServletRequest request,HttpServletResponse response) throws Exception;

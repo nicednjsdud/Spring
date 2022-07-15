@@ -18,6 +18,7 @@
 	<!--select -->
 	<select id="selectAllArticlesList" resultMap="articlesResult"
 		parameterType="java.util.Map"> 
+		<!-- 오라클의 계층형 SQL문 -->
 		<![CDATA[ 		
 			SELECT LEVEL, ARTICLENO ,PARENTNO ,lpad(' ',4*(LEVEL-1)) || TITLE title, CONTENT ,WRITEDATE ,ID 
 			FROM T_BOARD 
@@ -26,5 +27,18 @@
 			ORDER siblings BY ARTICLENO DESC 
 		 ]]>
 	</select>
+	
+	<select id="selectNewArticleNO" resultType="int">	<!-- 추가하는 새글에 대한 글 번호를 가져옴 -->
+		<![CDATA[
+			SELECT nvl(Max(articleNO),0) +1 FROM t_board
+		]]>
+	</select>
+	
+	<insert id="insertNewArticle" parameterType="java.util.Map"> <!-- 글정보를 Map으로 전달함 -->
+		<![CDATA[
+			INSERT INTO T_BOARD (ArticleNO,TITLE,CONTENT,IMAGEFILENAME,id)
+			VALUES (#{ArticleNO},#{TITLE},#{cotent},null,#{id})
+		]]>
+	</insert>
 	
 </mapper>  

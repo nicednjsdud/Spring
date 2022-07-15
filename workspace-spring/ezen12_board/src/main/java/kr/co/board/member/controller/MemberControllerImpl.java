@@ -62,27 +62,26 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 
 		return mav;
 	}
-
+	/*
+	 * 로그인창 요청 시 매개변수 result가 전송되면
+	 * 변수 result에 값을 저장함
+	 * 매개변수 result가 전송되지 않으면 무시함.
+	 * 
+	 * 로그인 후 수행할 글쓰기 요청명을 action에 저장
+	 * 
+	 */
 	// 요청명이 Form.do로 끝나면 form() 메서드 호출
-	@Override
 	@RequestMapping(value = "/member/*Form.do", method = RequestMethod.GET)
-	public ModelAndView form(@RequestParam(value="result",required=false)String result,HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String) request.getAttribute("viewName");
+	public ModelAndView form(@RequestParam(value="result",required=false)String result,
+								@RequestParam(value="action",required=false) String action,HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");	// 인터셉터에서 바인딩된 뷰이름 가져옴
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("action", action);
+		
 		ModelAndView mav = new ModelAndView(viewName); // viewName이 definition태그에 설정한 뷰이름과 일치함
 		return mav;
 	}
-	/*
-	 * 로그인창 요청시 매개변수 result가 전송되면 변수 result에 값을 저장함. 매개변수 result가 전송되지 않으면 무시함.
-	 * 
-	 */
-//	@Override
-//	@RequestMapping(value = "/member/*Form.do", method = RequestMethod.GET)
-//	public ModelAndView form(@RequestParam(value="result",required=false)String result,HttpServletRequest request, HttpServletResponse response) throws Exception {
-//		String viewName=getViewName(request);
-//		ModelAndView mav = new ModelAndView(viewName);
-//		
-//		return mav;
-//	}
 
 	// 회원 가입창에서 전송된 회원 정보를 바로 MemberDT 객체에 설정함
 	@Override
@@ -123,6 +122,7 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 
 	@Override
 	@RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
+																			 // 리다이렉트 시 매개변수 전달함
 	public ModelAndView login(@ModelAttribute("member") MemberDTO memberDTO, RedirectAttributes rAttributes,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -130,9 +130,20 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 		memberDTO = memberService.login(memberDTO);
 		if (memberDTO != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("member", memberDTO); // 세션에 회원정보 저장
-			session.setAttribute("isLogOn", true); // 세션에 로그인 상태를 true로 설정함
-			mav.setViewName("redirect:/member/listMembers.do"); // memberDTO로 반환된 값이 있으면 세션을 이용해 로그인상태 true로 함
+			session.setAttribute("member", memberDTO); 			// 세션에 회원정보 저장
+			session.setAttribute("isLogOn", true); 				// 세션에 로그인 상태를 true로 설정함
+			
+			String action = (String)session.getAttribute("action");	// 로그인 성공시 세션에 저장된 action값 저장
+			if(action !=null) {
+				if(action.equals("/board/articleForm.do")) {	// action값을 뷰이름으로 지정해 글쓰기창으로 이동
+					mav.setViewName("redirect:" + action);
+				}
+			}
+			else {
+				mav.setViewName("redirect:/main.do");
+			}
+			session.removeAttribute("action");
+			
 		} else {
 			rAttributes.addAttribute("result", "loginFailed"); // 로그인 실패시 실패 메세지를 로그인창 전달
 			mav.setViewName("redirect:/member/loginForm.do"); // 로그인 실패시 다시로그인창으로 리다이렉트
