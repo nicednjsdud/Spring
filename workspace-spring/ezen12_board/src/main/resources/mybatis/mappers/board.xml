@@ -17,28 +17,54 @@
 
 	<!--select -->
 	<select id="selectAllArticlesList" resultMap="articlesResult"
-		parameterType="java.util.Map"> 
+		parameterType="java.util.Map">
 		<!-- 오라클의 계층형 SQL문 -->
 		<![CDATA[ 		
-			SELECT LEVEL, ARTICLENO ,PARENTNO ,lpad(' ',4*(LEVEL-1)) || TITLE title, CONTENT ,WRITEDATE ,ID 
+			SELECT LEVEL
+				,ARTICLENO 
+				,PARENTNO 
+				,lpad(' ', 4*(LEVEL-1)) || TITLE title 
+				,CONTENT 
+				,WRITEDATE 
+				,ID 
 			FROM T_BOARD 
-			START WITH parentNO = 0		
-			CONNECT BY PRIOR ARTICLENO =PARENTNO  
+			START WITH PARENTNO=0			
+			CONNECT BY PRIOR ARTICLENO = PARENTNO 		
 			ORDER siblings BY ARTICLENO DESC 
 		 ]]>
 	</select>
-	
+
 	<select id="selectNewArticleNO" resultType="int">	<!-- 추가하는 새글에 대한 글 번호를 가져옴 -->
 		<![CDATA[
-			SELECT nvl(Max(articleNO),0) +1 FROM t_board
+			SELECT nvl(MAX(ARTICLENO),0) + 1 FROM T_BOARD
 		]]>
 	</select>
-	
+
 	<insert id="insertNewArticle" parameterType="java.util.Map"> <!-- 글정보를 Map으로 전달함 -->
 		<![CDATA[
-			INSERT INTO T_BOARD (ArticleNO,TITLE,CONTENT,IMAGEFILENAME,id)
-			VALUES (#{ArticleNO},#{TITLE},#{cotent},null,#{id})
+			INSERT INTO T_BOARD (ARTICLENO, TITLE, CONTENT, IMAGEFILENAME, ID)
+			VALUES (#{articleNO},#{title},#{content}, null, #{id})		
 		]]>
 	</insert>
-	
+
+	<select id="selectNewImageFileNO" resultType="int">
+		<![CDATA[
+			SELECT nvl(MAX(imageFileNO),0) FROM T_IMAGEFILE
+		]]>
+	</select>
+
+	<select id="insertNewImage" parameterType="java.util.Map">
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
+			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
+		</foreach>
+	</select>
+
+	<select id="selectArticle" resultType="articleDTO"
+		parameterType="int">
+		<![CDATA[
+			SELECT * from T_board where ArticleNO = #{articleNO}
+		]]>
+	</select>
 </mapper>  
