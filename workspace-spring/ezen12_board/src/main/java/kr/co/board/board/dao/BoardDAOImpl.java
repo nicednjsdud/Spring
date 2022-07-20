@@ -24,6 +24,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return articlesList;
 	}
 
+	// 글정보를 게시판 테이블(T-Board)에 추가한 후 글 번호를 반환함
 	@Override
 	public int insertNewArticle(Map articleMap) throws DataAccessException {
 		int articleNO = selectNewArticleNO();
@@ -40,21 +41,22 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public void insertNewImage(Map articleMap) throws DataAccessException {
-		
-		List<ImageDTO> imageFileList =(List<ImageDTO>) articleMap.get("imageFileList");
-		int articleNO = (Integer)articleMap.get("articleNO");
-		
-		int imageFileNO = selectNewImageFileNO();
-		
-		if(imageFileList !=null && imageFileList.size() !=0) {
-			for(ImageDTO imageDTO : imageFileList) {
+
+		List<ImageDTO> imageFileList = (List<ImageDTO>) articleMap.get("imageFileList");
+		int articleNO = (Integer) articleMap.get("articleNO"); // articleMap에 있는 글 번호를 가져옴
+
+		int imageFileNO = selectNewImageFileNO(); // 이미지 번호를 가져옴
+
+		if (imageFileList != null && imageFileList.size() != 0) {
+			// ImageDTO 개게를 차레대로 가져와 이미지번호와 글번호 속성을 설정함
+			for (ImageDTO imageDTO : imageFileList) {
 				imageDTO.setImageFileNO(++imageFileNO);
 				imageDTO.setArticleNO(articleNO);
 			}
 			// T_IMAGEFILE 테이블에 INSERT
-			sqlSession.insert("mapper.board.insertNewImage",imageFileList);
+			sqlSession.insert("mapper.board.insertNewImage", imageFileList);
 		}
-		
+
 	}
 
 	private int selectNewImageFileNO() {
@@ -63,14 +65,14 @@ public class BoardDAOImpl implements BoardDAO {
 
 	@Override
 	public ArticleDTO selectArticle(int articleNO) throws DataAccessException {
+
+		return sqlSession.selectOne("mapper.board.selectArticle", articleNO);
+	}
+
+	@Override
+	public List<ImageDTO> selectImageFileLIst(int articleNO) throws DataAccessException {
 		
-		return sqlSession.selectOne("mapper.board.selectArticle",articleNO);
+		List<ImageDTO> imageFileList = sqlSession.selectList("mapper.board.selectImageFileList",articleNO);
+		return imageFileList;
 	}
 }
-
-
-
-
-
-
-

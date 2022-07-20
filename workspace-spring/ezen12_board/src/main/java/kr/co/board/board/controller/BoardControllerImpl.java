@@ -97,11 +97,13 @@ public class BoardControllerImpl implements BoardController {
 
 		List<ImageDTO> imageFileList = new ArrayList<>();
 		if (fileList != null && fileList.size() != 0) {
+			// 전송되는 이미지 정보를 ImageDAO 객체의 속성에 차례대로 저장한 후 imageFilelist에 다시 저장함
 			for (String fileName : fileList) {
 				ImageDTO imageDTO = new ImageDTO();
 				imageDTO.setImageFileName(fileName);
 				imageFileList.add(imageDTO);
 			}
+			// imageFileList를 다시 articleMap에 저장함
 			articleMap.put("imageFileList", imageFileList);
 		}
 
@@ -113,9 +115,10 @@ public class BoardControllerImpl implements BoardController {
 		
 		try {
 		
-			int articleNO = boardService.addNewArticle(articleMap);
+			int articleNO = boardService.addNewArticle(articleMap);	// articleMap을 서비스 클래스를 전달
 	
 			if (imageFileList != null && imageFileList.size() != 0) {
+				// 첨부한 이미지들을 for문을 이용해 업로드함
 				for(ImageDTO imageDTO : imageFileList) {
 					// temp => articleNO 이미지 이동.
 					imageFileName = imageDTO.getImageFileName();
@@ -134,6 +137,7 @@ public class BoardControllerImpl implements BoardController {
 			
 		}catch (Exception e) {
 			if (imageFileList != null && imageFileList.size() != 0) {
+				// 오류 발생시 temp폴더의 이미지들 모두 삭제
 				for(ImageDTO imageDTO : imageFileList) {
 					imageFileName = imageDTO.getImageFileName();
 					File srcFile = new File(ARTICLE_IMAGE_REPO+"/"+"temp"+"/"+imageFileName);
@@ -164,6 +168,7 @@ public class BoardControllerImpl implements BoardController {
 
 			if (originalFileName != "" && originalFileName != null) {
 				fileList.add(originalFileName);
+				// 첨부한 파일이름을 차례대로 지정함
 				File file = new File(ARTICLE_IMAGE_REPO + "/" + fileName);
 				if (mFile.getSize() != 0) {
 					if (!file.exists()) {
@@ -185,7 +190,7 @@ public class BoardControllerImpl implements BoardController {
 		
 		String viewName = (String)request.getAttribute("viewName");
 		
-		Map<String,Object>  articleMap = boardService.viewArticle(articleNO);
+		Map<String,Object>  articleMap = boardService.viewArticle(articleNO);	//조회할 글 정보,이미지파일 정보를 articleMap에 설정
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("articleMap",articleMap);
 		mav.setViewName(viewName);

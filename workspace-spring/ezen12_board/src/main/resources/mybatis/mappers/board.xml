@@ -14,6 +14,12 @@
 		<result property="imageFileName" column="imageFileName" />
 		<result property="id" column="id" />
 	</resultMap>
+	
+	<resultMap type="imageDTO" id="imageResult">
+		<result property="imageFileNO" column="imageFileNO" />
+		<result property="imageFileName" column="imageFileName" />
+		<result property="articleNO" column="articleNO" />
+	</resultMap>
 
 	<!--select -->
 	<select id="selectAllArticlesList" resultMap="articlesResult"
@@ -54,6 +60,7 @@
 	</select>
 
 	<select id="insertNewImage" parameterType="java.util.Map">
+		<!-- 한꺼번에 여러개의 레코드 추가 -->
 		<foreach collection="list" item="item" open="INSERT ALL"
 			separator=" " close="SELECT * FROM DUAL">
 			INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
@@ -65,6 +72,12 @@
 		parameterType="int">
 		<![CDATA[
 			SELECT * from T_board where ArticleNO = #{articleNO}
+		]]>
+	</select>
+	
+	<select id="selectImageFileList" resultMap="imageResult" parameterType="int">
+		<![CDATA[
+			SELECT * FROM t_imageFile WHERE articleNO = #{articleNO} ORDER BY IMAGEFILENO
 		]]>
 	</select>
 </mapper>  
