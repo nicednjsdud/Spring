@@ -13,4 +13,6 @@ public interface BoardService {
 
 	public Map<String, Object> viewArticle(int articleNO) throws Exception;
 
+	public void modArticle(Map<String,Object> articleMap) throws Exception;
+
 }

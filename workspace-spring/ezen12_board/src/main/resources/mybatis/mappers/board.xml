@@ -80,4 +80,31 @@
 			SELECT * FROM t_imageFile WHERE articleNO = #{articleNO} ORDER BY IMAGEFILENO
 		]]>
 	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateArticle" parameterType="java.util.Map" >
+		<![CDATA[
+			UPDATE T_BOARD SET TITLE= ${title} , content = ${content} WHERE ARTICLENO = ${articleNO}
+		]]>
+	</update>
+	
+	<update id="updateImageFile" parameterType="java.util.List">
+		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+			<choose>
+				<when test="item.imageFileName != null">
+						UPDATE T_IMAGEFILE SET IMAGEFILENAME = #{item.imageFileName} 
+						WHERE ARTICLENO = #{item.articleNO} AND IMAGEFILENO = #{item.imageFileNO}
+				</when>
+				<otherwise></otherwise>
+			</choose>
+		</foreach>
+	</update>
+	
+	<insert id ="insertModNewImage" parameterType="java.util.Map">
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
+			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
+		</foreach>
+	</insert>
 </mapper>  
