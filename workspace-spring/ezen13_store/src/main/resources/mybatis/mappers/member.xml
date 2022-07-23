@@ -14,7 +14,10 @@
 		<result property="hp2" column="hp2" />
 		<result property="hp3" column="hp3" />
 		<result property="smssts_yn" column="smssts_yn" />
-
+		
+		<result property="home_hp1" column="home_hp1" />
+		<result property="home_hp2" column="home_hp2" />
+		<result property="home_hp3" column="home_hp3" />
 		<result property="email1" column="email1" />
 		<result property="email2" column="email2" />
 		<result property="emailsts_yn" column="emailsts_yn" />
@@ -42,6 +45,19 @@
 			FROM TB_SHOPPING_MEMBER WHERE MEMBER_ID = #{id}
 		]]>
 	</select>
+	
+	<insert id="insertMember" parameterType="java.util.HashMap">
+		<![CDATA[
+			INSERT INTO ADMIN.TB_SHOPPING_MEMBER
+			(MEMBER_ID, MEMBER_PW, MEMBER_NAME, MEMBER_GENDER, HP1, HP2, HP3, HOME_HP1, HOME_HP2, HOME_HP3, 
+			 SMSSTS_YN, EMAIL1,EMAIL2, EMAILSTS_YN, ZIPCODE, ROADADDRESS, JIBUNADDRESS, NAMUJIADDRESS, 
+			 MEMBER_BIRTH_Y, MEMBER_BIRTH_M, MEMBER_BIRTH_D, MEMBER_BIRTH_GN)
+			 VALUES(#{member_id},#{member_pw},#{member_name},#{member_gender},#{hp1}, #{hp2},#{hp3},
+			        #{home_hp1}, #{home_hp2}, #{home_hp3}, #{smssts_yn}, #{email1}, #{email2}, #{emailsts_yn},
+			        #{zipcode}, #{roadaddress}, #{jibunaddress}, #{namujiaddress}, #{member_birth_y},
+			        #{member_birth_m},#{member_birth_d},#{MEMBER_birth_gn})
+		]]>
+	</insert>
 
 
 
