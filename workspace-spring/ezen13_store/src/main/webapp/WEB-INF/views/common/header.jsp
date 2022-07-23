@@ -27,7 +27,7 @@
 					<li><a>장바구니</a></li>
 				</c:when>
 				<c:otherwise>
-					<li><a>로그인</a></li>
+					<li><a href="${contextPath }/member/loginForm.do">로그인</a></li>
 					<li><a href="${contextPath }/member/memberForm.do">회원가입</a></li>
 				</c:otherwise>
 			</c:choose>
