@@ -8,4 +8,8 @@
 		<put-attribute name="title" value="bob 회원 가입 페이지" />
 		<put-attribute name="body" value="/WEB-INF/views/member/memberForm.jsp" />
 	</definition>
+	<definition name="/member/loginForm" extends="baseLayout">
+		<put-attribute name="title" value="bob 로그인 페이지" />
+		<put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp" />
+	</definition>
 </tiles-definitions>
