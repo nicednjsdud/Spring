@@ -152,7 +152,7 @@
              Note: The pattern used is equivalent to using pattern="common" -->
         <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs" pattern="%h %l %u %t &quot;%r&quot; %s %b" prefix="localhost_access_log" suffix=".txt"/>
 
-      <Context docBase="ezen08_Spring_Annotation" path="/bob" reloadable="true" source="org.eclipse.jst.jee.server:ezen08_Spring_Annotation"/><Context docBase="ezen09_log4j_tiles" path="/tiles" reloadable="true" source="org.eclipse.jst.jee.server:ezen09_log4j_tiles"/><Context docBase="ezen10_FileUD_intercepter" path="/fileinter" reloadable="true" source="org.eclipse.jst.jee.server:ezen10_FileUD_intercepter"/><Context docBase="ezen11_Restful" path="/restful" reloadable="true" source="org.eclipse.jst.jee.server:ezen11_Restful"/><Context docBase="ezen12_board" path="/board" reloadable="true" source="org.eclipse.jst.jee.server:ezen12_board"/><Context docBase="ezen13_store" path="/bobstudy" reloadable="true" source="org.eclipse.jst.jee.server:ezen13_store"/></Host>
+      <Context docBase="ezen13_store" path="/bobstudy" reloadable="true" source="org.eclipse.jst.jee.server:ezen13_store"/><Context docBase="LentCarProject" path="/ezenac" reloadable="true" source="org.eclipse.jst.jee.server:LentCarProject"/><Context docBase="ezen12_board" path="/board" reloadable="true" source="org.eclipse.jst.jee.server:ezen12_board"/></Host>
     </Engine>
   </Service>
 </Server>

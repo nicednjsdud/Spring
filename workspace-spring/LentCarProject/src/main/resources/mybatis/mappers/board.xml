@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.board">						<!-- member.xml의 네임스페이스 지정 -->
+
+	<resultMap type="articleDTO" id="articlesResult">	<!-- 글 정보를 저장할 resultMap을 설정 -->
+		<result property="level" column="level" />	<!-- 레코드의 컬럼 이름에 대해 articleDTO의 같은 속성에 값을 설정 -->
+		<result property="articleNO" column="articleNO" />
+		<result property="parentNO" column="parentNO" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="imageFileName" column="imageFileName" />
+		<result property="id" column="id" />
+	</resultMap>
+	
+	<resultMap type="imageDTO" id="imageResult">
+		<result property="imageFileNO" column="imageFileNO" />
+		<result property="imageFileName" column="imageFileName" />
+		<result property="articleNO" column="articleNO" />
+	</resultMap>
+
+	<!--select -->
+	<select id="selectAllArticlesList" resultMap="articlesResult"
+		parameterType="java.util.Map">
+		<!-- 오라클의 계층형 SQL문 -->
+		<![CDATA[ 		
+			SELECT LEVEL
+				,ARTICLENO 
+				,PARENTNO 
+				,lpad(' ', 4*(LEVEL-1)) || TITLE title 
+				,CONTENT 
+				,WRITEDATE 
+				,ID 
+			FROM T_BOARD 
+			START WITH PARENTNO=0			
+			CONNECT BY PRIOR ARTICLENO = PARENTNO 		
+			ORDER siblings BY ARTICLENO DESC 
+		 ]]>
+	</select>
+
+	<select id="selectNewArticleNO" resultType="int">	<!-- 추가하는 새글에 대한 글 번호를 가져옴 -->
+		<![CDATA[
+			SELECT nvl(MAX(ARTICLENO),0) + 1 FROM T_BOARD
+		]]>
+	</select>
+
+	<insert id="insertNewArticle" parameterType="java.util.Map"> <!-- 글정보를 Map으로 전달함 -->
+		<![CDATA[
+			INSERT INTO T_BOARD (ARTICLENO, TITLE, CONTENT, IMAGEFILENAME, ID)
+			VALUES (#{articleNO},#{title},#{content}, null, #{id})		
+		]]>
+	</insert>
+
+	<select id="selectNewImageFileNO" resultType="int">
+		<![CDATA[
+			SELECT nvl(MAX(imageFileNO),0) FROM T_IMAGEFILE
+		]]>
+	</select>
+
+	<select id="insertNewImage" parameterType="java.util.Map">
+		<!-- 한꺼번에 여러개의 레코드 추가 -->
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
+			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
+		</foreach>
+	</select>
+
+	<select id="selectArticle" resultType="articleDTO"
+		parameterType="int">
+		<![CDATA[
+			SELECT * from T_board where ArticleNO = #{articleNO}
+		]]>
+	</select>
+	
+	<select id="selectImageFileList" resultMap="imageResult" parameterType="int">
+		<![CDATA[
+			SELECT * FROM t_imageFile WHERE articleNO = #{articleNO} ORDER BY IMAGEFILENO
+		]]>
+	</select>
+	
+	<!-- 게시글 수정 -->
+	<update id="updateArticle" parameterType="java.util.Map" >
+		<![CDATA[
+			UPDATE T_BOARD SET TITLE= ${title} , content = ${content} WHERE ARTICLENO = ${articleNO}
+		]]>
+	</update>
+	
+	<update id="updateImageFile" parameterType="java.util.List">
+		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+			<choose>
+				<when test="item.imageFileName != null">
+						UPDATE T_IMAGEFILE SET IMAGEFILENAME = #{item.imageFileName} 
+						WHERE ARTICLENO = #{item.articleNO} AND IMAGEFILENO = #{item.imageFileNO}
+				</when>
+				<otherwise></otherwise>
+			</choose>
+		</foreach>
+	</update>
+	
+	<insert id ="insertModNewImage" parameterType="java.util.Map">
+		<foreach collection="list" item="item" open="INSERT ALL"
+			separator=" " close="SELECT * FROM DUAL">
+			INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
+			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
+		</foreach>
+	</insert>
+</mapper>  
