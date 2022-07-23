@@ -11,6 +11,9 @@ public class MemberDTO {
 	private String hp1;
 	private String hp2;
 	private String hp3;
+	private String home_hp1;
+	private String home_hp2;
+	private String home_hp3;
 	private String smssts_yn;
 	private String email1;
 	private String email2;
@@ -67,6 +70,24 @@ public class MemberDTO {
 	}
 	public void setHp3(String hp3) {
 		this.hp3 = hp3;
+	}
+	public String getHome_hp1() {
+		return home_hp1;
+	}
+	public void setHome_hp1(String home_hp1) {
+		this.home_hp1 = home_hp1;
+	}
+	public String getHome_hp2() {
+		return home_hp2;
+	}
+	public void setHome_hp2(String home_hp2) {
+		this.home_hp2 = home_hp2;
+	}
+	public String getHome_hp3() {
+		return home_hp3;
+	}
+	public void setHome_hp3(String home_hp3) {
+		this.home_hp3 = home_hp3;
 	}
 	public String getSmssts_yn() {
 		return smssts_yn;
@@ -153,3 +174,4 @@ public class MemberDTO {
 		this.del_yn = del_yn;
 	}
 }
+	
