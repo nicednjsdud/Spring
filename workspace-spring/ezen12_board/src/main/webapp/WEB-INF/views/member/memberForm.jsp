@@ -10,9 +10,39 @@ request.setCharacterEncoding("utf-8");
 <head>
 <meta charset="UTF-8">
 <title>회원 가입 창</title>
+<script type="text/javascript">
+	function joinform_check(form){
+		const id = document.getElementById("id");
+		const pwd = document.getElementById("pwd");
+		const name = document.getElementById("name");
+		const email = document.getElementById("email");
+		
+		if(id.value ==""){
+			alert("아이디를 입력하세요.");
+			id.focus();
+			return false;
+		}
+		if(pwd.value ==""){
+			alert("아이디를 입력하세요.");
+			pwd.focus();
+			return false;
+		}
+		if(name.value ==""){
+			alert("아이디를 입력하세요.");
+			name.focus();
+			return false;
+		}
+		if(email.value ==""){
+			alert("아이디를 입력하세요.");
+			email.focus();
+			return false;
+		}
+		
+	}
+</script>
 </head>
 <body>
-	<form action="${contextPath}/member/addMember.do" method="post">
+	<form action="${contextPath}/member/addMember.do" method="post" onSubmit="joinform_check(this);">
 		<h1 style="text-align: center;">회원 가입창</h1>
 		<table align="center">
 			<tr>
@@ -43,11 +73,12 @@ request.setCharacterEncoding("utf-8");
 				<td width="200">
 					<p align="right">&nbsp;</p>
 				</td>
-				<td width="400"><input type="submit" value="가입하기" /> <input
-					type="reset" value="다시입력" /></td>
+				<td width="400">
+					<input type="submit" value="가입하기"/> 
+					<input type="reset" value="다시입력" />
+				</td>
 			</tr>
 		</table>
 	</form>
-	u
 </body>
 </html>
