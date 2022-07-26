@@ -37,14 +37,14 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 	// @Autowired를 이용해 id가 memberDTO인 빈을 자동 주입함
 	@Autowired
 	private MemberDTO memberDTO;
-	
-	@RequestMapping(value="/main.do",method=RequestMethod.GET)
-	public ModelAndView main(HttpServletRequest request,HttpServletResponse response) throws Exception{
-		String viewName = (String)request.getAttribute("viewName");
+
+	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
+	public ModelAndView main(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		return mav;
-		
+
 	}
 
 	// 두 단계로 요청 시 바로 해당 메서드를 호출하도록 매핑함
@@ -62,24 +62,35 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 
 		return mav;
 	}
+
 	/*
-	 * 로그인창 요청 시 매개변수 result가 전송되면
-	 * 변수 result에 값을 저장함
-	 * 매개변수 result가 전송되지 않으면 무시함.
+	 * 로그인창 요청 시 매개변수 result가 전송되면 변수 result에 값을 저장함 매개변수 result가 전송되지 않으면 무시함.
 	 * 
 	 * 로그인 후 수행할 글쓰기 요청명을 action에 저장
 	 * 
 	 */
 	// 요청명이 Form.do로 끝나면 form() 메서드 호출
 	@RequestMapping(value = "/member/*Form.do", method = RequestMethod.GET)
-	public ModelAndView form(@RequestParam(value="result",required=false)String result,
-								@RequestParam(value="action",required=false) String action,HttpServletRequest request, HttpServletResponse response) throws Exception {
-		String viewName = (String) request.getAttribute("viewName");	// 인터셉터에서 바인딩된 뷰이름 가져옴
-		
+	public ModelAndView form(@RequestParam(value = "result", required = false) String result,
+			@RequestParam(value = "action", required = false) String action,
+			@RequestParam(value="parentNO",required = false) String parentNO,
+			@RequestParam(value="groupNO",required = false) String groupNO,
+			HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		String viewName = (String) request.getAttribute("viewName"); // 인터셉터에서 바인딩된 뷰이름 가져옴
 		HttpSession session = request.getSession();
 		session.setAttribute("action", action);
 		
+		// 답글쓰기로 로그인 시
+		if(parentNO !=null) {
+			session.setAttribute("parentNO", parentNO); // 답글 쓰기 클릭시 부모글번호를 세션에 저장
+		}
+		if(groupNO !=null) {
+			session.setAttribute("groupNO", groupNO); // 답글 쓰기 클릭시 그룹글번호를 세션에 저장
+		}
+
 		ModelAndView mav = new ModelAndView(viewName); // viewName이 definition태그에 설정한 뷰이름과 일치함
+		mav.addObject("result",result);
 		return mav;
 	}
 
@@ -122,7 +133,7 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 
 	@Override
 	@RequestMapping(value = "/member/login.do", method = RequestMethod.POST)
-																			 // 리다이렉트 시 매개변수 전달함
+	// 리다이렉트 시 매개변수 전달함
 	public ModelAndView login(@ModelAttribute("member") MemberDTO memberDTO, RedirectAttributes rAttributes,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -130,21 +141,29 @@ public class MemberControllerImpl extends MultiActionController implements Membe
 		memberDTO = memberService.login(memberDTO);
 		if (memberDTO != null) {
 			HttpSession session = request.getSession();
-			session.setAttribute("member", memberDTO); 			// 세션에 회원정보 저장
-			session.setAttribute("isLogOn", true); 				// 세션에 로그인 상태를 true로 설정함
-			
-			String action = (String)session.getAttribute("action");	// 로그인 성공시 세션에 저장된 action값 저장
-			if(action !=null) {
-				if(action.equals("/board/articleForm.do")) {	// action값을 뷰이름으로 지정해 글쓰기창으로 이동
+			session.setAttribute("member", memberDTO); // 세션에 회원정보 저장
+			session.setAttribute("isLogOn", true); // 세션에 로그인 상태를 true로 설정함
+
+			String action = (String) session.getAttribute("action"); // 로그인 성공시 세션에 저장된 action값 저장
+			session.removeAttribute("action");
+			if (action != null) {
+				if (action.equals("/board/articleForm.do")) { // action값을 뷰이름으로 지정해 글쓰기창으로 이동
 					mav.setViewName("redirect:" + action);
 				}
-			}
-			else {
-				mav.setViewName("redirect:/main.do");
-			}
-			session.removeAttribute("action");
+
+				else if (action.equals("/board/replyForm.do")) {
+					mav.setViewName("redirect:" + action);
+
+				} 
+			}else {
+					mav.setViewName("redirect:/main.do");
+				}
+				
 			
-		} else {
+
+		} else
+
+		{
 			rAttributes.addAttribute("result", "loginFailed"); // 로그인 실패시 실패 메세지를 로그인창 전달
 			mav.setViewName("redirect:/member/loginForm.do"); // 로그인 실패시 다시로그인창으로 리다이렉트
 		}

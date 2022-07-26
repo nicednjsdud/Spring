@@ -14,7 +14,7 @@
 		<result property="imageFileName" column="imageFileName" />
 		<result property="id" column="id" />
 	</resultMap>
-	
+
 	<resultMap type="imageDTO" id="imageResult">
 		<result property="imageFileNO" column="imageFileNO" />
 		<result property="imageFileName" column="imageFileName" />
@@ -22,7 +22,7 @@
 	</resultMap>
 
 	<!--select -->
-	<select id="selectAllArticlesList" resultMap="articlesResult"
+	<select id="selectAllArticlesList0" resultMap="articlesResult"
 		parameterType="java.util.Map">
 		<!-- 오라클의 계층형 SQL문 -->
 		<![CDATA[ 		
@@ -39,6 +39,42 @@
 			ORDER siblings BY ARTICLENO DESC 
 		 ]]>
 	</select>
+	
+	<!-- 모든 글 조회 -->
+	<select id="selectAllArticlesList" resultMap="articlesResult" parameterType="java.util.Map">
+		SELECT * FROM (
+			SELECT GROUPNO ,LVL ,articleNO,parentNO,title,id,writedate
+			from(
+				SELECT groupNO,LEVEL AS lvl, articleno,parentno,title,id,writedate
+				FROM (
+						SELECT * FROM T_BOARD2
+							WHERE GROUPNO IN(
+								SELECT GROUPNO 
+								FROM (
+									SELECT recNum, groupNO
+									FROM (
+										SELECT rowNum AS recnum,  groupNO
+											from(
+												SELECT DISTINCT groupNO FROM T_BOARD2 tb ORDER BY GROUPNO DESC
+												)
+										)
+									WHERE recNum BETWEEN (#{section}-1)*100 + (#{pageNum}-1)*10+1 AND (#{section}-1)*100 + (#{pageNum}*10)
+									)
+							)		
+					)
+				START WITH parentNO = 0		
+				CONNECT BY PRIOR ARTICLENO = PARENTNO  
+				ORDER siblings BY ARTICLENO DESC
+				)
+			)
+	</select>
+	
+	<select id = "selectTotArticles" resultType="int" >
+	
+		<![CDATA[
+			SELECT count(DISTINCT GROUPNO) FROM T_BOARD2 tb
+		]]>
+	</select>
 
 	<select id="selectNewArticleNO" resultType="int">	<!-- 추가하는 새글에 대한 글 번호를 가져옴 -->
 		<![CDATA[
@@ -46,10 +82,23 @@
 		]]>
 	</select>
 
+	<select id="selectNewGroupNO" resultType="int">	<!-- 추가하는 새글에 대한 글 번호를 가져옴 -->
+		<![CDATA[
+			SELECT nvl(MAX(groupNO),0) + 1 FROM T_BOARD2
+		]]>
+	</select>
+
 	<insert id="insertNewArticle" parameterType="java.util.Map"> <!-- 글정보를 Map으로 전달함 -->
 		<![CDATA[
-			INSERT INTO T_BOARD2 (ARTICLENO, TITLE, CONTENT, ID)
-			VALUES (#{articleNO},#{title},#{content}, #{id})		
+			INSERT INTO T_BOARD2 (GroupNO ,ARTICLENO, parentNO, TITLE, CONTENT, ID)
+			VALUES (#{groupNO},#{articleNO},#{parentNO},#{title},#{content}, #{id})		
+		]]>
+	</insert>
+	
+	<insert id="insertReplyArticle" parameterType="java.util.Map"> <!-- 글정보를 Map으로 전달함 -->
+		<![CDATA[
+			INSERT INTO T_BOARD2 (GroupNO ,ARTICLENO, parentNO, TITLE, CONTENT, ID)
+			VALUES (#{groupNO},#{articleNO},#{parentNO},#{title},#{content}, #{id})		
 		]]>
 	</insert>
 
@@ -63,8 +112,10 @@
 		<!-- 한꺼번에 여러개의 레코드 추가 -->
 		<foreach collection="list" item="item" open="INSERT ALL"
 			separator=" " close="SELECT * FROM DUAL">
-			INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
-			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
+			INTO t_imageFile(imageFileNO, imageFileName,
+			articleNO, regDate)
+			VALUES
+			(#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
 		</foreach>
 	</select>
 
@@ -74,46 +125,51 @@
 			SELECT * from T_BOARD2 where ArticleNO = #{articleNO}
 		]]>
 	</select>
-	
-	<select id="selectImageFileList" resultMap="imageResult" parameterType="int">
+
+	<select id="selectImageFileList" resultMap="imageResult"
+		parameterType="int">
 		<![CDATA[
 			SELECT * FROM t_imageFile WHERE articleNO = #{articleNO} ORDER BY IMAGEFILENO
 		]]>
 	</select>
-	
+
 	<!-- 게시글 수정 -->
-	<update id="updateArticle" parameterType="java.util.Map" >
+	<update id="updateArticle" parameterType="java.util.Map">
 		<![CDATA[
 			UPDATE T_BOARD2 SET TITLE= ${title} , content = ${content} WHERE ARTICLENO = ${articleNO}
 		]]>
 	</update>
-	
+
 	<update id="updateImageFile" parameterType="java.util.List">
-		<foreach collection="list" item="item" separator=";" open="DECLARE BEGIN" close="; END;">
+		<foreach collection="list" item="item" separator=";"
+			open="DECLARE BEGIN" close="; END;">
 			<choose>
 				<when test="item.imageFileName != null">
-						UPDATE T_IMAGEFILE SET IMAGEFILENAME = #{item.imageFileName} 
-						WHERE ARTICLENO = #{item.articleNO} AND IMAGEFILENO = #{item.imageFileNO}
+					UPDATE T_IMAGEFILE SET IMAGEFILENAME = #{item.imageFileName}
+					WHERE ARTICLENO = #{item.articleNO} AND IMAGEFILENO =
+					#{item.imageFileNO}
 				</when>
 				<otherwise></otherwise>
 			</choose>
 		</foreach>
 	</update>
-	
-	<insert id ="insertModNewImage" parameterType="java.util.Map">
+
+	<insert id="insertModNewImage" parameterType="java.util.Map">
 		<foreach collection="list" item="item" open="INSERT ALL"
 			separator=" " close="SELECT * FROM DUAL">
-			INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
-			VALUES (#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
+			INTO t_imageFile(imageFileNO, imageFileName,
+			articleNO, regDate)
+			VALUES
+			(#{item.imageFileNO},#{item.imageFileName},#{item.articleNO},sysdate)
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteArticle" parameterType="int">
 		<![CDATA[
 			DELETE from T_BOARD2 WHERE articleNO = #{articleNO}
 		]]>
 	</delete>
-	
+
 	<delete id="deleteModImage" parameterType="imageDTO">
 		<![CDATA[
 			DELETE FROM T_IMAGEFILE WHERE articleNO = #{articleNO} AND IMAGEFILENO = #{imageFileNO}

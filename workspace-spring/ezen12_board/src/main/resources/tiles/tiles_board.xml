@@ -21,6 +21,11 @@
 		<put-attribute name="body" value="/WEB-INF/views/board/viewArticle.jsp" />
 	</definition>
 	
+	<definition name="/board/replyForm" extends="baseLayout">
+		<put-attribute name="title" value="답글" />
+		<put-attribute name="body" value="/WEB-INF/views/board/replyForm.jsp" />
+	</definition>
+	
 
 </tiles-definitions>       
        

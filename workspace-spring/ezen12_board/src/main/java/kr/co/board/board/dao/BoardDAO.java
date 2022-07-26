@@ -11,6 +11,8 @@ import kr.co.board.board.dto.ImageDTO;
 public interface BoardDAO {
 	public List<ArticleDTO> selectAllArticlesList() throws DataAccessException;
 
+	public List<ArticleDTO> selectAllArticlesList(Map<String, Integer> pagingMap) throws DataAccessException;
+
 	public int insertNewArticle(Map articleMap) throws DataAccessException;
 
 	public void insertNewImage(Map articleMap) throws DataAccessException;
@@ -28,4 +30,9 @@ public interface BoardDAO {
 	public void deleteArticle(int articleNO) throws DataAccessException;
 
 	public void deleteModImage(ImageDTO imageDTO) throws DataAccessException;
+
+	public int insertReplyArticle(Map articleMap) throws DataAccessException;
+
+	public int selectTotArticles() throws DataAccessException;
+
 }

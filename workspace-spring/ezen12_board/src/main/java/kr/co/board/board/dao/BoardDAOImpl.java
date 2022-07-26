@@ -23,18 +23,38 @@ public class BoardDAOImpl implements BoardDAO {
 		List<ArticleDTO> articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList");
 		return articlesList;
 	}
+	@Override
+	public List<ArticleDTO> selectAllArticlesList(Map<String, Integer> pagingMap) throws DataAccessException {
+		List<ArticleDTO> articlesList = sqlSession.selectList("mapper.board.selectAllArticlesList",pagingMap);
+		return articlesList;
+	}
+	@Override
+	public int selectTotArticles() throws DataAccessException {
+		int totArticles = sqlSession.selectOne("mapper.board.selectTotArticles");
+		return totArticles;
+	}
 
 	// 글정보를 게시판 테이블(T-Board)에 추가한 후 글 번호를 반환함
 	@Override
 	public int insertNewArticle(Map articleMap) throws DataAccessException {
+		
+		int groupNO = selectNewGroupNO();
+		articleMap.put("groupNO",groupNO);
+		
 		int articleNO = selectNewArticleNO();
 		articleMap.put("articleNO", articleNO);
 		sqlSession.insert("mapper.board.insertNewArticle", articleMap);
 		return articleNO;
 	}
 
-	// 가게시글 번호의 MAX값 + 1 구함
+	
 
+	private int selectNewGroupNO() throws DataAccessException{
+		int maxGroupNO = sqlSession.selectOne("mapper.board.selectNewGroupNO");
+		return maxGroupNO;
+	}
+	
+	// 가게시글 번호의 MAX값 + 1 구함
 	private int selectNewArticleNO() {
 		return sqlSession.selectOne("mapper.board.selectNewArticleNO");
 	}
@@ -43,8 +63,9 @@ public class BoardDAOImpl implements BoardDAO {
 	public void insertNewImage(Map articleMap) throws DataAccessException {
 
 		List<ImageDTO> imageFileList = (List<ImageDTO>) articleMap.get("imageFileList");
-		int articleNO = (Integer) articleMap.get("articleNO"); // articleMap에 있는 글 번호를 가져옴
 
+		
+		int articleNO = (Integer) articleMap.get("articleNO"); // articleMap에 있는 글 번호를 가져옴
 		int imageFileNO = selectNewImageFileNO(); // 이미지 번호를 가져옴
 
 		if (imageFileList != null && imageFileList.size() != 0) {
@@ -127,4 +148,18 @@ public class BoardDAOImpl implements BoardDAO {
 	public void deleteModImage(ImageDTO imageDTO) throws DataAccessException {
 		sqlSession.delete("mapper.board.deleteModImage",imageDTO);
 	}
+
+	@Override
+	public int insertReplyArticle(Map articleMap) throws DataAccessException {
+		
+		int articleNO = selectNewArticleNO();
+		articleMap.put("articleNO", articleNO);
+		
+		sqlSession.insert("mapper.board.insertReplyArticle",articleMap);
+		
+		return articleNO;
+	}
+	
+
+	
 }

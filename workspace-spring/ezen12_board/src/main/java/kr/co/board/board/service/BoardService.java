@@ -20,4 +20,8 @@ public interface BoardService {
 
 	public void removeModImage(ImageDTO imageDTO) throws Exception;
 
+	public int addReplyArticle(Map articleMap) throws Exception;
+
+	public Map<String, Integer> listArticles(Map<String, Integer> pagingMap) throws Exception;
+
 }

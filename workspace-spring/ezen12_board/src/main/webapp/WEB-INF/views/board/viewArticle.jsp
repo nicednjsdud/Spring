@@ -132,12 +132,31 @@
 		function fn_reply_form(isLogOn, url, parentNO, groupNO){
 			alert("parentNO : "+parentNO);
 			
-			if(isLogOn !='' && isLogOn ='false){
+			if(isLogOn !='' && isLogOn != false){
+				let form = document.createElement("form");
+				form.setAttribute("mehtod","post");
+				form.setAttribute("action",url);
+				
+				let parentNOInput = document.createElement("input");
+				parentNOInput.setAttribute("type","hidden");
+				parentNOInput.setAttribute("name","parentNO");
+				parentNOInput.setAttribute("value",parentNO);
+				
+				let groupNOInput = document.createElement("input");
+				groupNOInput.setAttribute("type","hidden");
+				groupNOInput.setAttribute("name","groupNO");
+				groupNOInput.setAttribute("value",groupNO);
+				
+				form.appendChild(parentNOInput);
+				form.appendChild(groupNOInput);
+				document.body.appendChild(form);
+				form.submit();
 				
 			}
 			else{
 				alert("로그인 후 글쓰기가 가능합니다.");
-				location.href="";
+				location.href="${contextPath}/member/loginForm.do?action=/board/replyForm.do&parentNO="+
+										parentNO+"&groupNO="+groupNO;
 			}
 		}
 				
@@ -253,8 +272,9 @@
 					</c:if> <input type="button" value="목록보기" onclick="backToList(frmArticle)" />
 					<input type="button" value="답글쓰기"
 					onclick="fn_reply_form('${isLogOn}',
-										'${contextPath }/board/replyForm.do)',${article.articleNO}') '${article.groupNO }' " />
-					<!-- 답글쓰기 클릭시 fn_reply_form() 호출하면서 articleNO(글번호)를 전달 --></td>
+										'${contextPath }/board/replyForm.do','${article.articleNO}', '${article.groupNO }') " />
+				</td>
+				<!-- 답글쓰기 클릭시 fn_reply_form() 호출하면서 articleNO(글번호)를 전달 -->
 			</tr>
 		</table>
 	</form>
