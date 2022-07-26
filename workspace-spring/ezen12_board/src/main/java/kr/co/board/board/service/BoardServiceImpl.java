@@ -79,4 +79,17 @@ public class BoardServiceImpl implements BoardService{
 			boardDAO.insertModNewImage(articleMap);
 		}
 	}
+
+
+	@Override
+	public void removeArticle(int articleNO) throws Exception {
+		boardDAO.deleteArticle(articleNO);
+	}
+
+
+	@Override
+	public void removeModImage(ImageDTO imageDTO) throws Exception {
+		boardDAO.deleteModImage(imageDTO);
+		
+	}
 }

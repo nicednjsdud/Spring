@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class ArticleDTO {
 	
 	private int level;
+	private int groupNO;
 	private int articleNO;
 	private int parentNO;
 	private String title;
@@ -93,6 +94,14 @@ public class ArticleDTO {
 
 	public void setWriteDate(Date writeDate) {
 		this.writeDate = writeDate;
+	}
+
+	public int getGroupNO() {
+		return groupNO;
+	}
+
+	public void setGroupNO(int groupNO) {
+		this.groupNO = groupNO;
 	}
 	
 	

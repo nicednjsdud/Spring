@@ -117,4 +117,14 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		sqlSession.insert("mapper.board.insertModNewImage",modAddImageFileList);
 	}
+
+	@Override
+	public void deleteArticle(int articleNO) throws DataAccessException {
+		sqlSession.delete("mapper.board.deleteArticle",articleNO);
+	}
+
+	@Override
+	public void deleteModImage(ImageDTO imageDTO) throws DataAccessException {
+		sqlSession.delete("mapper.board.deleteModImage",imageDTO);
+	}
 }

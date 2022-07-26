@@ -24,4 +24,8 @@ public interface BoardDAO {
 	public void updateImageFile(Map<String, Object> articleMap) throws DataAccessException;
 
 	public void insertModNewImage(Map<String, Object> articleMap) throws DataAccessException;
+
+	public void deleteArticle(int articleNO) throws DataAccessException;
+
+	public void deleteModImage(ImageDTO imageDTO) throws DataAccessException;
 }
