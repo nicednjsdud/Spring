@@ -178,6 +178,11 @@
 					disabled /></td>
 			</tr>
 			<tr>
+				<td width="150" align="center" bgcolor="#add3f7">조회수</td>
+				<td><input type="text" value="${article.viewCounts }" name="viewCounts"
+					disabled /></td>
+			</tr>
+			<tr>
 				<td width="150" align="center" bgcolor="#add3f7">제목</td>
 				<td><input type="text" value="${article.title }" name="title"
 					id="i_title" disabled /></td>

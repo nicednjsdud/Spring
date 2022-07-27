@@ -13,6 +13,7 @@ public interface BoardService {
 	public int addNewArticle(Map articleMap) throws Exception;
 
 	public Map<String, Object> viewArticle(int articleNO) throws Exception;
+	public Map<String, Object> viewArticle(Map<String, Object> viewMap) throws Exception;
 
 	public void modArticle(Map<String,Object> articleMap) throws Exception;
 
@@ -23,5 +24,7 @@ public interface BoardService {
 	public int addReplyArticle(Map articleMap) throws Exception;
 
 	public Map<String, Integer> listArticles(Map<String, Integer> pagingMap) throws Exception;
+
+	
 
 }

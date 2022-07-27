@@ -6,13 +6,14 @@
 <mapper namespace="mapper.board">						<!-- member.xml의 네임스페이스 지정 -->
 
 	<resultMap type="articleDTO" id="articlesResult">	<!-- 글 정보를 저장할 resultMap을 설정 -->
-		<result property="level" column="level" />	<!-- 레코드의 컬럼 이름에 대해 articleDTO의 같은 속성에 값을 설정 -->
+		<result property="level" column="lvl" />	<!-- 레코드의 컬럼 이름에 대해 articleDTO의 같은 속성에 값을 설정 -->
 		<result property="articleNO" column="articleNO" />
 		<result property="parentNO" column="parentNO" />
 		<result property="title" column="title" />
 		<result property="content" column="content" />
 		<result property="imageFileName" column="imageFileName" />
 		<result property="id" column="id" />
+		<result property="viewCounts" column="viewCounts" />
 	</resultMap>
 
 	<resultMap type="imageDTO" id="imageResult">
@@ -43,9 +44,9 @@
 	<!-- 모든 글 조회 -->
 	<select id="selectAllArticlesList" resultMap="articlesResult" parameterType="java.util.Map">
 		SELECT * FROM (
-			SELECT GROUPNO ,LVL ,articleNO,parentNO,title,id,writedate
+			SELECT GROUPNO ,lvl ,articleNO,parentNO,title,id,writedate,viewCounts
 			from(
-				SELECT groupNO,LEVEL AS lvl, articleno,parentno,title,id,writedate
+				SELECT groupNO,LEVEL as lvl, articleno,parentno,title,id,writedate,viewCounts
 				FROM (
 						SELECT * FROM T_BOARD2
 							WHERE GROUPNO IN(
@@ -175,4 +176,10 @@
 			DELETE FROM T_IMAGEFILE WHERE articleNO = #{articleNO} AND IMAGEFILENO = #{imageFileNO}
 		]]>
 	</delete>
+	
+	<update id="updateViewCounts" parameterType="int">
+		<![CDATA[
+			UPDATE T_BOARD2 SET viewcounts = viewcounts + 1 WHERE ARTICLENO = #{articleNO}
+		]]>
+	</update>
 </mapper>  

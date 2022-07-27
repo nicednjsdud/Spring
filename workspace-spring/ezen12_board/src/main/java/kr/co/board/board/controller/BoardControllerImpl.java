@@ -62,12 +62,16 @@ public class BoardControllerImpl implements BoardController {
 		pagingMap.put("pageNum", pageNum);
 
 		// 모든 글 정보 조회
-		
+
 		String viewName = (String) request.getAttribute("viewName");
-		Map<String,Integer> articlesMap = boardService.listArticles(pagingMap);
+		Map<String, Integer> articlesMap = boardService.listArticles(pagingMap);
+
+		articlesMap.put("section", section);
+		articlesMap.put("pageNum", pageNum);
+
 		ModelAndView mav = new ModelAndView(viewName);
 		// 조회한 글 정보를 바인딩 후 jsp로 전달함
-//		mav.addObject("articlesList", articlesList);
+		mav.addObject("articlesMap", articlesMap);
 
 		return mav;
 	}
@@ -333,8 +337,21 @@ public class BoardControllerImpl implements BoardController {
 
 		String viewName = (String) request.getAttribute("viewName");
 
-		Map<String, Object> articleMap = boardService.viewArticle(articleNO); // 조회할 글 정보,이미지파일 정보를 articleMap에 설정
+		HttpSession session = request.getSession();
+		MemberDTO memberDTO = (MemberDTO) session.getAttribute("member");
 
+		String id = null;
+		if (memberDTO != null) {
+			id = memberDTO.getId();
+			
+		}
+		
+		Map<String, Object> viewMap = new HashMap<>();
+		viewMap.put("articleNO", articleNO);
+		viewMap.put("id", id);
+
+		// Map<String, Object> articleMap = boardService.viewArticle(articleNO); // 조회할 글 정보,이미지파일 정보를 articleMap에 설정
+		Map<String, Object> articleMap = boardService.viewArticle(viewMap);
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(viewName);
 		mav.addObject("articleMap", articleMap);

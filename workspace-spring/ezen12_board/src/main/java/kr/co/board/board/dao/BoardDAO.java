@@ -35,4 +35,6 @@ public interface BoardDAO {
 
 	public int selectTotArticles() throws DataAccessException;
 
+	public void updateViewCounts(int articleNO) throws DataAccessException;
+
 }

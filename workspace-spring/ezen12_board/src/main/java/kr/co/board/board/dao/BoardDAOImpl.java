@@ -159,6 +159,11 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return articleNO;
 	}
+	@Override
+	public void updateViewCounts(int articleNO) throws DataAccessException {
+		
+		sqlSession.update("mapper.board.updateViewCounts",articleNO);
+	}
 	
 
 	

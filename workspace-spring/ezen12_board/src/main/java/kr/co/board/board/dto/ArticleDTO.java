@@ -16,6 +16,7 @@ public class ArticleDTO {
 	private String imageFileName;
 	private String id;
 	private Date writeDate;
+	private int viewCounts;
 	
 	public ArticleDTO() {
 		// TODO Auto-generated constructor stub
@@ -102,6 +103,14 @@ public class ArticleDTO {
 
 	public void setGroupNO(int groupNO) {
 		this.groupNO = groupNO;
+	}
+
+	public int getViewCounts() {
+		return viewCounts;
+	}
+
+	public void setViewCounts(int viewCounts) {
+		this.viewCounts = viewCounts;
 	}
 	
 	

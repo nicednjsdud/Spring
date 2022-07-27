@@ -32,8 +32,9 @@ public class BoardServiceImpl implements BoardService{
 		Map articlesMap = new HashMap<>();
 		List<ArticleDTO> articleList = boardDAO.selectAllArticlesList(pagingMap);
 		int total_count = boardDAO.selectTotArticles();
-		
-		return null;
+		articlesMap.put("articleList", articleList);
+		articlesMap.put("total_count", total_count);
+		return articlesMap;
 	}
 
 
@@ -53,6 +54,29 @@ public class BoardServiceImpl implements BoardService{
 		Map<String,Object> articleMap = new HashMap<>();
 		ArticleDTO articleDTO = boardDAO.selectArticle(articleNO);
 		
+		// 이미지 부분 정보 요청
+		List<ImageDTO> imageFileList = boardDAO.selectImageFileLIst(articleNO);
+		
+		articleMap.put("article", articleDTO);
+		articleMap.put("imageFileList", imageFileList);
+		return articleMap;
+	}
+	@Override
+	public Map<String, Object> viewArticle(Map<String, Object> viewMap) throws Exception {
+		int articleNO = (int)viewMap.get("articleNO");
+		String id = (String) viewMap.get("id");
+		Map<String,Object> articleMap = new HashMap<>();
+		// 조회수가 갱신하기 전
+		ArticleDTO articleDTO = boardDAO.selectArticle(articleNO);
+		
+		// 로그인한 아이디(id)와 게시글의 글쓴이 아이디를 비교함
+		String writerId = articleDTO.getId();
+		if(id == null || !(id.equals(writerId))) {
+			// 조회수 1 증가시킴
+			boardDAO.updateViewCounts(articleNO);
+			articleDTO = boardDAO.selectArticle(articleNO);
+			// 
+		}
 		// 이미지 부분 정보 요청
 		List<ImageDTO> imageFileList = boardDAO.selectImageFileLIst(articleNO);
 		
@@ -113,6 +137,7 @@ public class BoardServiceImpl implements BoardService{
 		
 		return articleNO;
 	}
+	
 
 
 	
