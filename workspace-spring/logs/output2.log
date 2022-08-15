@@ -1,58 +1,36 @@
-[00:08:16][INFO ](ContextLoader.java:305)-Root WebApplicationContext: initialization started
-[00:08:16][INFO ](AbstractApplicationContext.java:581)-Refreshing Root WebApplicationContext: startup date [Fri Jul 29 00:08:16 KST 2022]; root of context hierarchy
-[00:08:16][INFO ](XmlBeanDefinitionReader.java:317)-Loading XML bean definitions from ServletContext resource [/WEB-INF/spring/action-mybatis.xml]
-[00:08:16][INFO ](PropertiesLoaderSupport.java:172)-Loading properties file from ServletContext resource [/WEB-INF/config/jdbc/jdbc.properties]
-[00:08:17][WARN ](AbstractApplicationContext.java:549)-Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in ServletContext resource [/WEB-INF/spring/action-mybatis.xml]: Invocation of init method failed; nested exception is org.springframework.core.NestedIOException: Failed to parse config resource: class path resource [mybatis/model/modelConfig.xml]; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing SQL Mapper Configuration. Cause: org.apache.ibatis.builder.BuilderException: Error registering typeAlias for 'memberDTO'. Cause: java.lang.ClassNotFoundException: Cannot find class: kr.co.board.member.dto.MemberDTO
-[00:08:17][ERROR](ContextLoader.java:351)-Context initialization failed
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sqlSessionFactory' defined in ServletContext resource [/WEB-INF/spring/action-mybatis.xml]: Invocation of init method failed; nested exception is org.springframework.core.NestedIOException: Failed to parse config resource: class path resource [mybatis/model/modelConfig.xml]; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing SQL Mapper Configuration. Cause: org.apache.ibatis.builder.BuilderException: Error registering typeAlias for 'memberDTO'. Cause: java.lang.ClassNotFoundException: Cannot find class: kr.co.board.member.dto.MemberDTO
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1578)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:545)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:482)
-	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:757)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:861)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:541)
-	at org.springframework.web.context.ContextLoader.configureAndRefreshWebApplicationContext(ContextLoader.java:444)
-	at org.springframework.web.context.ContextLoader.initWebApplicationContext(ContextLoader.java:326)
-	at org.springframework.web.context.ContextLoaderListener.contextInitialized(ContextLoaderListener.java:107)
-	at org.apache.catalina.core.StandardContext.listenerStart(StandardContext.java:4768)
-	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:5230)
-	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:183)
-	at org.apache.catalina.core.StandardContext.reload(StandardContext.java:3818)
-	at org.apache.catalina.loader.WebappLoader.backgroundProcess(WebappLoader.java:311)
-	at org.apache.catalina.core.StandardContext.backgroundProcess(StandardContext.java:5613)
-	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1365)
-	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1369)
-	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.processChildren(ContainerBase.java:1369)
-	at org.apache.catalina.core.ContainerBase$ContainerBackgroundProcessor.run(ContainerBase.java:1347)
-	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:515)
-	at java.base/java.util.concurrent.FutureTask.runAndReset(FutureTask.java:305)
-	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:305)
-	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
-	at java.base/java.lang.Thread.run(Thread.java:829)
-Caused by: org.springframework.core.NestedIOException: Failed to parse config resource: class path resource [mybatis/model/modelConfig.xml]; nested exception is org.apache.ibatis.builder.BuilderException: Error parsing SQL Mapper Configuration. Cause: org.apache.ibatis.builder.BuilderException: Error registering typeAlias for 'memberDTO'. Cause: java.lang.ClassNotFoundException: Cannot find class: kr.co.board.member.dto.MemberDTO
-	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:590)
-	at org.mybatis.spring.SqlSessionFactoryBean.afterPropertiesSet(SqlSessionFactoryBean.java:491)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1637)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1574)
-	... 29 more
-Caused by: org.apache.ibatis.builder.BuilderException: Error parsing SQL Mapper Configuration. Cause: org.apache.ibatis.builder.BuilderException: Error registering typeAlias for 'memberDTO'. Cause: java.lang.ClassNotFoundException: Cannot find class: kr.co.board.member.dto.MemberDTO
-	at org.apache.ibatis.builder.xml.XMLConfigBuilder.parseConfiguration(XMLConfigBuilder.java:122)
-	at org.apache.ibatis.builder.xml.XMLConfigBuilder.parse(XMLConfigBuilder.java:99)
-	at org.mybatis.spring.SqlSessionFactoryBean.buildSqlSessionFactory(SqlSessionFactoryBean.java:587)
-	... 32 more
-Caused by: org.apache.ibatis.builder.BuilderException: Error registering typeAlias for 'memberDTO'. Cause: java.lang.ClassNotFoundException: Cannot find class: kr.co.board.member.dto.MemberDTO
-	at org.apache.ibatis.builder.xml.XMLConfigBuilder.typeAliasesElement(XMLConfigBuilder.java:177)
-	at org.apache.ibatis.builder.xml.XMLConfigBuilder.parseConfiguration(XMLConfigBuilder.java:110)
-	... 34 more
-Caused by: java.lang.ClassNotFoundException: Cannot find class: kr.co.board.member.dto.MemberDTO
-	at org.apache.ibatis.io.ClassLoaderWrapper.classForName(ClassLoaderWrapper.java:196)
-	at org.apache.ibatis.io.ClassLoaderWrapper.classForName(ClassLoaderWrapper.java:89)
-	at org.apache.ibatis.io.Resources.classForName(Resources.java:261)
-	at org.apache.ibatis.builder.xml.XMLConfigBuilder.typeAliasesElement(XMLConfigBuilder.java:170)
-	... 35 more
+[23:24:14][INFO ](ContextLoader.java:305)-Root WebApplicationContext: initialization started
+[23:24:14][INFO ](AbstractApplicationContext.java:581)-Refreshing Root WebApplicationContext: startup date [Sat Aug 13 23:24:14 KST 2022]; root of context hierarchy
+[23:24:14][INFO ](XmlBeanDefinitionReader.java:317)-Loading XML bean definitions from ServletContext resource [/WEB-INF/spring/action-mybatis.xml]
+[23:24:14][INFO ](PropertiesLoaderSupport.java:172)-Loading properties file from ServletContext resource [/WEB-INF/config/jdbc/jdbc.properties]
+[23:24:14][INFO ](ContextLoader.java:345)-Root WebApplicationContext: initialization completed in 306 ms
+[23:24:14][INFO ](FrameworkServlet.java:489)-FrameworkServlet 'appServlet': initialization started
+[23:24:14][INFO ](AbstractApplicationContext.java:581)-Refreshing WebApplicationContext for namespace 'appServlet-servlet': startup date [Sat Aug 13 23:24:14 KST 2022]; parent: Root WebApplicationContext
+[23:24:14][INFO ](XmlBeanDefinitionReader.java:317)-Loading XML bean definitions from ServletContext resource [/WEB-INF/spring/appServlet/servlet-context.xml]
+[23:24:15][INFO ](AutowiredAnnotationBeanPostProcessor.java:155)-JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/],methods=[GET]}" onto public java.lang.String kr.co.board.HomeController.home(java.util.Locale,org.springframework.ui.Model)
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/*Form.do],methods=[GET || POST]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.board.controller.BoardControllerImpl.form(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/addReplyArticle.do],methods=[POST]}" onto public org.springframework.http.ResponseEntity<java.lang.String> kr.co.board.board.controller.BoardControllerImpl.addReplyArticle(org.springframework.web.multipart.MultipartHttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/viewArticle.do],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.board.controller.BoardControllerImpl.viewArticle(int,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/removeArticle.do],methods=[POST]}" onto public org.springframework.http.ResponseEntity kr.co.board.board.controller.BoardControllerImpl.removeArticle(int,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/removeModImage.do],methods=[POST]}" onto public void kr.co.board.board.controller.BoardControllerImpl.removeModImage(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/addNewArticle.do],methods=[POST]}" onto public org.springframework.http.ResponseEntity kr.co.board.board.controller.BoardControllerImpl.addNewArticle(org.springframework.web.multipart.MultipartHttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/listArticles.do],methods=[GET || POST]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.board.controller.BoardControllerImpl.listArticles(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/replyForm.do],methods=[GET || POST]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.board.controller.BoardControllerImpl.replyForm(java.lang.String,java.lang.String,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/board/modArticle.do],methods=[POST]}" onto public org.springframework.http.ResponseEntity kr.co.board.board.controller.BoardControllerImpl.modArticle(org.springframework.web.multipart.MultipartHttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/download.do]}" onto public void kr.co.board.common.file.FileDownloadController.download(java.lang.String,java.lang.String,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/main.do],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.main(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/member/*Form.do],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.form(java.lang.String,java.lang.String,java.lang.String,java.lang.String,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/member/listMembers.do],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.listMembers(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/member/removeMember.do],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.removeMember(java.lang.String,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/member/addMember.do],methods=[POST]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.addMember(kr.co.board.member.dto.MemberDTO,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/member/login.do],methods=[POST]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.login(kr.co.board.member.dto.MemberDTO,org.springframework.web.servlet.mvc.support.RedirectAttributes,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception
+[23:24:15][INFO ](AbstractHandlerMethodMapping.java:543)-Mapped "{[/member/logout.do],methods=[GET]}" onto public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.logout(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+[23:24:15][INFO ](RequestMappingHandlerAdapter.java:534)-Looking for @ControllerAdvice: WebApplicationContext for namespace 'appServlet-servlet': startup date [Sat Aug 13 23:24:14 KST 2022]; parent: Root WebApplicationContext
+[23:24:15][INFO ](RequestMappingHandlerAdapter.java:534)-Looking for @ControllerAdvice: WebApplicationContext for namespace 'appServlet-servlet': startup date [Sat Aug 13 23:24:14 KST 2022]; parent: Root WebApplicationContext
+[23:24:15][INFO ](AbstractUrlHandlerMapping.java:354)-Mapped URL path [/resources/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
+[23:24:15][DEBUG](MultiActionController.java:318)-Found action method [public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.main(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception]
+[23:24:15][DEBUG](MultiActionController.java:318)-Found action method [public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.listMembers(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.lang.Exception]
+[23:24:15][DEBUG](MultiActionController.java:318)-Found action method [public org.springframework.web.servlet.ModelAndView kr.co.board.member.controller.MemberControllerImpl.logout(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse) throws java.io.IOException]
+[23:24:15][INFO ](FrameworkServlet.java:508)-FrameworkServlet 'appServlet': initialization completed in 757 ms
+[23:26:32][INFO ](AbstractApplicationContext.java:982)-Closing WebApplicationContext for namespace 'appServlet-servlet': startup date [Sat Aug 13 23:24:14 KST 2022]; parent: Root WebApplicationContext
+[23:26:32][INFO ](AbstractApplicationContext.java:982)-Closing Root WebApplicationContext: startup date [Sat Aug 13 23:24:14 KST 2022]; root of context hierarchy
