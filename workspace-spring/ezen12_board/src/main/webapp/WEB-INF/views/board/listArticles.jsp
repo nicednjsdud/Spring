@@ -73,7 +73,8 @@
 						<!-- varStatus의 속성 count을 이용해 글번호 1부터 자동표시 -->
 						<td width="10%">${article.id }</td>
 						<td width="35%" align="left"><span
-							style="padding-right: 30px;"></span> <c:choose>
+							style="padding-right: 30px;"></span>
+							 <c:choose>
 								<c:when test="${article.level>1 }">
 									<c:forEach begin="1" end="${article.level }" step="1">
 										<!-- 부모글 기준 왼쪽 여백을 level값만큼 채워 들여쓰기 -->
